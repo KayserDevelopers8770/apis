@@ -22,7 +22,7 @@ app.use(function (req, res, next) {
 
 
 //routes
-app.use("/skus", skusRoute)
+app.use("/stockBodega", skusRoute)
 
 
 //start the server

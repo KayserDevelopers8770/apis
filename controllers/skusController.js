@@ -56,7 +56,7 @@ module.exports = {
       cont++;
       tabla += '<tr><td>' + cont + '</td></td><td>' + reg['sku'] + '</td><td>' + reg['cantidad'] + '</td></tr>'
     })
-    tabla += '</table>'
+    tabla += '</table>'    
     //dado que el request a la base de datos es ASINCRONO, la unica forma de mostrar el resultado despues de cargar la pagina es enviando la respuesta en este callback
     res.writeHead(200, { "Content-Type": "text/html" });
     res.write(tabla)
@@ -68,23 +68,13 @@ module.exports = {
     // })       
   },
 
-  getSkus : async (req,res) => {
+  getStockSkus : async (req,res) => {
     const { substrSku } = req.params
-    let pool = await sql.connect(stringConnection)
-    // console.log(substrSku);
-    try {      
-      const queryStock = "select t0.IdArticulo as sku, CAST(SUM(t0.Cantidad) - 30 AS int) as cantidad  from   Existencia as t0 inner join Ubicacion as t1 on t0.IdUbicacion = t1.IdUbicacion where  t0.IdAlmacen = '01' AND t0.IdUbicacion LIKE '01%' and t1.Nivel in ('1', '2') AND t0.IdArticulo LIKE '" + substrSku +"%' GROUP BY IdArticulo HAVING SUM(Cantidad) > 30 ORDER BY IdArticulo"
-      let result = await pool.request()
-        // .input('input_parameter', sql.VarChar, substrSku)   
-        .query(queryStock)    
-      res.status(200).json(result.recordset); 
-    } catch (err) {
-      if (pool) { return pool.close() }
-      return null;
-    }
-    // pool.on('error', err => {
-    //   // ... error handler       
-    //   console.log('Error ' + err);
-    // })
+    const pool = await sql.connect(stringConnection)
+    const queryStock = "select t0.IdArticulo as sku, CAST(SUM(t0.Cantidad) - 30 AS int) as cantidad  from   Existencia as t0 inner join Ubicacion as t1 on t0.IdUbicacion = t1.IdUbicacion where  t0.IdAlmacen = '01' AND t0.IdUbicacion LIKE '01%' and t1.Nivel in ('1', '2') AND t0.IdArticulo LIKE '" + substrSku + "%' GROUP BY IdArticulo HAVING SUM(Cantidad) > 30 ORDER BY IdArticulo"
+    const result = await pool.request() // .input('input_parameter', sql.VarChar, substrSku)   
+      .query(queryStock)
+    res.status(200).json(result.recordset);  
+    sql.close();
   }
 }
