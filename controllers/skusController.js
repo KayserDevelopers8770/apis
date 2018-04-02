@@ -70,10 +70,17 @@ module.exports = {
 
   getStockSkus : async (req,res) => {
     const { substrSku } = req.params
+    // console.log(substrSku);
     const pool = await sql.connect(stringConnection)
-    const queryStock = "select t0.IdArticulo as sku, CAST(SUM(t0.Cantidad) - 30 AS int) as cantidad  from   Existencia as t0 inner join Ubicacion as t1 on t0.IdUbicacion = t1.IdUbicacion where  t0.IdAlmacen = '01' AND t0.IdUbicacion LIKE '01%' and t1.Nivel in ('1', '2') AND t0.IdArticulo LIKE '" + substrSku + "%' GROUP BY IdArticulo HAVING SUM(Cantidad) > 30 ORDER BY IdArticulo"
-    const result = await pool.request() // .input('input_parameter', sql.VarChar, substrSku)   
-      .query(queryStock)
+
+    // const queryStock = "select t0.IdArticulo as sku, CAST(SUM(t0.Cantidad) - 30 AS int) as cantidad  from   Existencia as t0 inner join Ubicacion as t1 on t0.IdUbicacion = t1.IdUbicacion where  t0.IdAlmacen = '01' AND t0.IdUbicacion LIKE '01%' and t1.Nivel in ('1', '2') AND t0.IdArticulo LIKE '" + substrSku + "%' GROUP BY IdArticulo HAVING SUM(Cantidad) > 30 ORDER BY IdArticulo"
+    // const result = await pool.request() // .input('input_parameter', sql.VarChar, substrSku)   
+    //   .query(queryStock)
+
+    const result = await pool.request()
+      .input('input', sql.VarChar(30), substrSku)
+      .execute('SP_OMNI_select_skus')
+      
     res.status(200).json(result.recordset);  
     sql.close();
   }
