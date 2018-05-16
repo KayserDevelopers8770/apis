@@ -14,5 +14,8 @@ module.exports = {
     }catch(err){
       sql.close();
     }
+  },
+  setSale : async (req,res) => {
+    
   }
 }

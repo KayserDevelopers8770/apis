@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 
-const skusRoute = require("./routes/skusRoute")
+const skusRoute = require("./routes/omniRoute")
 
 //SETTINGS
 app.set('port', process.env.PORT || 3000);
@@ -21,6 +21,7 @@ app.use(function (req, res, next) {
 
 //routes
 app.use("/stockBodega", skusRoute)
+app.use("/ventaOmni", skusRoute)
 
 //start the server
 app.listen(app.get('port'), () => {
