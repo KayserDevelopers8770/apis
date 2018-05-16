@@ -3,7 +3,6 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 
-
 const skusRoute = require("./routes/skusRoute")
 
 //SETTINGS
@@ -20,12 +19,10 @@ app.use(function (req, res, next) {
   next();
 });
 
-
 //routes
 app.use("/stockBodega", skusRoute)
 
-
 //start the server
 app.listen(app.get('port'), () => {
-  console.log('SEVER ON PORT ' + app.get('port'));
+  console.log('Servidor en: http://localhost:' + app.get('port') + '/route/...');
 })
