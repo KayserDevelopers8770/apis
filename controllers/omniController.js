@@ -16,6 +16,8 @@ module.exports = {
     }
   },
   setSale : async (req,res) => {
-    
+    const sale = req.body
+    console.dir(sale);
+    res.status(200).json({ success : true })
   }
 }

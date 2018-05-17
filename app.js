@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 
-const skusRoute = require("./routes/omniRoute")
+const omniRoute = require("./routes/omniRoute")
 
 //SETTINGS
 app.set('port', process.env.PORT || 3000);
@@ -20,10 +20,9 @@ app.use(function (req, res, next) {
 });
 
 //routes
-app.use("/stockBodega", skusRoute)
-app.use("/ventaOmni", skusRoute)
+app.use("/omni", omniRoute)
 
 //start the server
 app.listen(app.get('port'), () => {
-  console.log('Servidor en: http://localhost:' + app.get('port') + '/route/...');
+  console.log('Servidor en: http://localhost:' + app.get('port') + '/omni/...');
 })
