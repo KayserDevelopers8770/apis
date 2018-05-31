@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./app.js",
+    "dev_inventary": "nodemon ./inventary.js",
+    "dev_omni": "nodemon ./omni.js",
     "moment": "nodemon ./pruebas_moment.js"
   },
   "keywords": [],
