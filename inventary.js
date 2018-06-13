@@ -19,6 +19,7 @@ app.use(function (req, res, next) {
     next();
 });
 
+
 //routes
 app.use("/inventary", inventaryRoute)
 

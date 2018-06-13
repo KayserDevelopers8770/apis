@@ -20,7 +20,7 @@ app.use(function (req, res, next) {
 });
 
 //routes
-app.use("/omni", omniRoute)
+app.use("/omni_prueba", omniRoute)
 
 //start the server
 app.listen(app.get('port'), () => {
