@@ -7,7 +7,8 @@ module.exports = {
     const stringConnection = 'mssql://sa:sa@192.168.0.33/SBO_KAYSER'
     try{
       const query_get_status = `
-        SELECT T1.U_GSP_DFLTCARD, T1.U_GSP_TIPOINTEGR, T1.U_GSP_TIPOINTEGRCP, T2.U_GSP_AUTOEXEC, T2.U_GSP_AUTOEXEC FROM [@GSP_TPVSHOP] AS T1 INNER JOIN [@GSP_TPVWCD] AS T2   ON T1.U_GSP_DFLTCARD=T2.U_GSP_NAME
+      SELECT T1.U_GSP_FILWAREHOUSE AS code, T1.U_GSP_DESC AS name, T1.U_GSP_AUTOEXEC AS status, T2.U_GSP_TIPOINTEGRCP AS sync
+      FROM [@GSP_TPVWCD] AS T1 INNER JOIN [@GSP_TPVSHOP] AS T2 ON T1.U_GSP_NAME=T2.U_GSP_DFLTCARD
       `
       const pool = await sql.connect(stringConnection)
       const result = await pool.request().query(query_get_status)  
@@ -19,3 +20,4 @@ module.exports = {
     }
   }
 }
+
