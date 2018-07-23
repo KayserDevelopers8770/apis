@@ -4,16 +4,23 @@ moment().format()
 const stringConnection = 'mssql://sa:sa@192.168.0.33/SBO_KAYSER'
 
 module.exports = { 
-  getStoresStatus : async (req,res) => {
-    
+  getDetailedPurchasesPromoters : async (req,res) => {    
     try{
-      const query_get_status = `
-      SELECT T1.U_GSP_FILWAREHOUSE AS code, T1.U_GSP_DESC AS name, T1.U_GSP_AUTOEXEC AS status, T2.U_GSP_TIPOINTEGRCP AS sync
-      FROM [@GSP_TPVWCD] AS T1 INNER JOIN [@GSP_TPVSHOP] AS T2 ON T1.U_GSP_NAME=T2.U_GSP_DFLTCARD
+      const query_get_detailed_purchases = `
+      select    t1.LicTradNum as numeroCedula, CONVERT(DATE, U_GSP_CADATA) FechaCompra, (CONVERT(date, getdate())) as FechaActualizacion, 
+        case  
+          when U_GSP_CADOCU IN ('vtd','vab') then CAST((U_GSP_CATOTA) * -1 AS Int)
+          when U_GSP_CADOCU not IN ('vtd','vab') then CAST((U_GSP_CATOTA) AS Int)  end as  Total,
+        case 
+          when U_GSP_CADOCU IN ('vti','VTIM','VTD','VAB','VFA') then 'COMPRAS'  END  as Indicador
+      from [@GSP_TPVCAP] t0  inner join OCRD t1 on t1.CardCode=t0.U_GSP_CACLIE 
+      where U_GSP_CADOCU not in ('vti_ag','vtim_ag','vtd_ag') and t1.GroupCode='6' and  U_GSP_CADATA between DATEADD(DAY, -15 , GETDATE()) AND getdate()
       `
       const pool = await sql.connect(stringConnection)
-      const result = await pool.request().query(query_get_status)  
-      // console.log(result.recordset);  
+      const result = await pool.request().query(query_get_detailed_purchases)  
+
+      console.log(result.recordset);  
+      
       res.status(200).json(result.recordset);
       sql.close();
     } catch (err) {

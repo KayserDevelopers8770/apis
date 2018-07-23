@@ -25,5 +25,5 @@ app.use("/external", externalRoute)
 
 //start the server
 app.listen(app.get('port'), () => {
-    console.log('Servidor en: http://localhost:' + app.get('port') + '/inventary/...');
+    console.log('Servidor en: http://localhost:' + app.get('port') + '/external/...');
 })
