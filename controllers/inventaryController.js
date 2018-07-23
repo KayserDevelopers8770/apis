@@ -21,12 +21,10 @@ module.exports = {
     }
   },
   changeStoreStatus : async (req,res) => {
-    try{
+    try {
       const { codStore, status } = req.params
-      console.log("Impresion de parametros: ",codStore,status);
-
-      const query_change_status_1 = ` `
-      
+      // console.log("Impresion de parametros: ",codStore,status);
+      const query_change_status_1 = ` `      
       if(status==true){
         const query_change_status_1 = ` `
         const query_change_status_2 = ` `
@@ -36,12 +34,10 @@ module.exports = {
       }
       // const pool1 = await sql.connect(stringConnection)
       // const result1 = await pool.request().query(query_change_status_1)  
-      
       // res.status(200).json({ code : codStore, status : status });
-      res.status(200).json({ success : true });
-      
+      res.status(200).json({ success : true })
       sql.close();
-    }catch {
+    } catch {
       sql.close();
     }
   }
