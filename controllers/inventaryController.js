@@ -29,15 +29,31 @@ module.exports = {
       // console.log("Impresion de parametros: ",codStore,status);
       const query_change_status_1 = ` `      
       if(status==true){
-        const query_change_status_1 = ` `
-        const query_change_status_2 = ` `
+        const query_change_status_1 = `update [@GSP_TPVSHOP] set U_GSP_TIPOINTEGR='FACT+COBRO', U_GSP_TIPOINTEGRCP='INTEGRAR'`
+        const query_change_status_2 = `update [@GSP_TPVWCD] set U_GSP_AUTOEXEC='Y', U_GSP_FILDATEEND='2099-12-31'`
       }else{
-        const query_change_status_1 = ` `
-        const query_change_status_2 = ` `
+        const query_change_status_1 = `update [@GSP_TPVSHOP] set U_GSP_TIPOINTEGR='NO_INTEG', U_GSP_TIPOINTEGRCP='NO_INTEGRAR'`
+        const query_change_status_2 = `update [@GSP_TPVWCD] set U_GSP_AUTOEXEC='N', U_GSP_FILDATEEND=getdate()-1`
       }
-      // const pool1 = await sql.connect(stringConnection)
-      // const result1 = await pool.request().query(query_change_status_1)  
-      // res.status(200).json({ code : codStore, status : status });
+
+      const pool1 = await sql.connect(stringConnection)
+      const result1 = await pool.request().query(query_change_status_1)  
+
+      if (result1.rowsAffected[0] == 0) { // SI NO SE ACTUALIZO EN LA TABLA U_GSP_TIPOINTEGR
+          console.log('ERROR AL ACTUALIZAR EN TABLA GSP_TPVSHOP');
+          sql.close();
+          return res.status(200).json({ success: false, detail: 'ERROR AL ACTUALIZAR EN TABLA GSP_TPVSHOP' })
+      }
+
+      const pool2 = await sql.connect(stringConnection)
+      const result2 = await pool.request().query(query_change_status_2)  
+
+      if (result2.rowsAffected[0] == 0) { // SI NO SE ACTUALIZO EN LA TABLA U_GSP_TIPOINTEGR
+          console.log('ERROR AL ACTUALIZAR EN TABLA GSP_TPVWCD, AUNQUE LA TABLA GSP_TPVSHOP SI SE ACTUALIZO, POSIBLEMENTE AHORA SEA INDETERMINADO');
+          sql.close();
+          return res.status(200).json({ success: false, detail: 'RROR AL ACTUALIZAR EN TABLA GSP_TPVWCD, AUNQUE LA TABLA GSP_TPVSHOP SI SE ACTUALIZO, POSIBLEMENTE AHORA SEA INDETERMINADO' })
+      }
+
       res.status(200).json({ success : true })
       sql.close();
     } catch {
