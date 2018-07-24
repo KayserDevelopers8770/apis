@@ -53,8 +53,9 @@ module.exports = {
           sql.close();
           return res.status(200).json({ success: false, detail: 'RROR AL ACTUALIZAR EN TABLA GSP_TPVWCD, AUNQUE LA TABLA GSP_TPVSHOP SI SE ACTUALIZO, POSIBLEMENTE AHORA SEA INDETERMINADO' })
       }
-      console.log('ACTUALIZACION DE TIENDA ' + codStore + ' A ESTADO: ' + status + ' SATISFACTORIA');
-      res.status(200).json({ success : true })
+      const resp = 'ACTUALIZACION DE TIENDA ' + codStore + ' A ESTADO: ' + status + ' SATISFACTORIA'
+      console.log(resp);
+      res.status(200).json({ success : true, detail : resp })
       sql.close();
     } catch {
       sql.close();
