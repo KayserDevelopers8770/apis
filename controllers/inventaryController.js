@@ -45,15 +45,15 @@ module.exports = {
           return res.status(200).json({ success: false, detail: 'ERROR AL ACTUALIZAR EN TABLA GSP_TPVSHOP' })
       }
 
-      const pool2 = await sql.connect(stringConnection)
-      const result2 = await pool.request().query(query_change_status_2)  
+      //const pool2 = await sql.connect(stringConnection)
+      //const result2 = await pool.request().query(query_change_status_2)  
 
       if (result2.rowsAffected[0] == 0) { // SI NO SE ACTUALIZO EN LA TABLA U_GSP_TIPOINTEGR
           console.log('ERROR AL ACTUALIZAR EN TABLA GSP_TPVWCD, AUNQUE LA TABLA GSP_TPVSHOP SI SE ACTUALIZO, POSIBLEMENTE AHORA SEA INDETERMINADO');
           sql.close();
           return res.status(200).json({ success: false, detail: 'RROR AL ACTUALIZAR EN TABLA GSP_TPVWCD, AUNQUE LA TABLA GSP_TPVSHOP SI SE ACTUALIZO, POSIBLEMENTE AHORA SEA INDETERMINADO' })
       }
-      const resp = 'ACTUALIZACION DE TIENDA ' + codStore + ' A ESTADO: ' + status + ' SATISFACTORIA'
+      //const resp = 'ACTUALIZACION DE TIENDA ' + codStore + ' A ESTADO: ' + status + ' SATISFACTORIA'
       console.log(resp);
       res.status(200).json({ success : true, detail : resp })
       sql.close();
