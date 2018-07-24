@@ -16,7 +16,7 @@ module.exports = {
       `
       const pool = await sql.connect(stringConnection)
       const result = await pool.request().query(query_get_status)  
-      console.log(result.recordset);  
+      // console.log(result.recordset);  
       res.status(200).json(result.recordset);
       sql.close();
     } catch (err) {
@@ -53,7 +53,7 @@ module.exports = {
           sql.close();
           return res.status(200).json({ success: false, detail: 'RROR AL ACTUALIZAR EN TABLA GSP_TPVWCD, AUNQUE LA TABLA GSP_TPVSHOP SI SE ACTUALIZO, POSIBLEMENTE AHORA SEA INDETERMINADO' })
       }
-
+      console.log('ACTUALIZACION DE TIENDA ' + codStore + ' A ESTADO: ' + status + ' SATISFACTORIA');
       res.status(200).json({ success : true })
       sql.close();
     } catch {
