@@ -23,43 +23,48 @@ module.exports = {
       sql.close();
     }
   },
+  
   changeStoreStatus : async (req,res) => {
     try {
       const { codStore, status } = req.params
-      // console.log("Impresion de parametros: ",codStore,status);
-      const query_change_status_1 = ` `      
-      if(status==true){
-        const query_change_status_1 = `update [@GSP_TPVSHOP] set U_GSP_TIPOINTEGR='FACT+COBRO', U_GSP_TIPOINTEGRCP='INTEGRAR'`
-        const query_change_status_2 = `update [@GSP_TPVWCD] set U_GSP_AUTOEXEC='Y', U_GSP_FILDATEEND='2099-12-31'`
-      }else{
-        const query_change_status_1 = `update [@GSP_TPVSHOP] set U_GSP_TIPOINTEGR='NO_INTEG', U_GSP_TIPOINTEGRCP='NO_INTEGRAR'`
-        const query_change_status_2 = `update [@GSP_TPVWCD] set U_GSP_AUTOEXEC='N', U_GSP_FILDATEEND=getdate()-1`
+      console.log("Impresion de parametros: ",codStore,status);
+      let query_change_status_1=''
+      let query_change_status_2=''
+      if(status=="true"){
+        query_change_status_1 = `update [@GSP_TPVSHOP] set U_GSP_TIPOINTEGR='FACT+COBRO', U_GSP_TIPOINTEGRCP='INTEGRAR' WHERE U_GSP_SHOP= '${codStore}'`
+        query_change_status_2 = `update [@GSP_TPVWCD] set U_GSP_AUTOEXEC='Y', U_GSP_FILDATEEND='2099-12-31' WHERE U_GSP_FILWAREHOUSE='${codStore}'`
+      } else {
+        query_change_status_1 = `update [@GSP_TPVSHOP] set U_GSP_TIPOINTEGR='NO_INTEG', U_GSP_TIPOINTEGRCP='NO_INTEG' WHERE U_GSP_SHOP= '${codStore}'`
+        query_change_status_2 = `update [@GSP_TPVWCD] set U_GSP_AUTOEXEC='N', U_GSP_FILDATEEND=getdate()-1 WHERE U_GSP_FILWAREHOUSE='${codStore}'`
       }
 
-      const pool1 = await sql.connect(stringConnection)
+      const pool = await sql.connect(stringConnection)
       const result1 = await pool.request().query(query_change_status_1)  
-
-      if (result1.rowsAffected[0] == 0) { // SI NO SE ACTUALIZO EN LA TABLA U_GSP_TIPOINTEGR
+      console.log('result1',result1);
+      if (result1 && result1.rowsAffected[0] == 0) { // SI NO SE ACTUALIZO EN LA TABLA U_GSP_TIPOINTEGR
           console.log('ERROR AL ACTUALIZAR EN TABLA GSP_TPVSHOP');
           sql.close();
           return res.status(200).json({ success: false, detail: 'ERROR AL ACTUALIZAR EN TABLA GSP_TPVSHOP' })
       }
 
-      //const pool2 = await sql.connect(stringConnection)
-      //const result2 = await pool.request().query(query_change_status_2)  
+      const result2 = await pool.request().query(query_change_status_2)  
 
-      if (result2.rowsAffected[0] == 0) { // SI NO SE ACTUALIZO EN LA TABLA U_GSP_TIPOINTEGR
+      if (result2 && result2.rowsAffected[0] == 0) { // SI NO SE ACTUALIZO EN LA TABLA U_GSP_TIPOINTEGR
           console.log('ERROR AL ACTUALIZAR EN TABLA GSP_TPVWCD, AUNQUE LA TABLA GSP_TPVSHOP SI SE ACTUALIZO, POSIBLEMENTE AHORA SEA INDETERMINADO');
           sql.close();
-          return res.status(200).json({ success: false, detail: 'RROR AL ACTUALIZAR EN TABLA GSP_TPVWCD, AUNQUE LA TABLA GSP_TPVSHOP SI SE ACTUALIZO, POSIBLEMENTE AHORA SEA INDETERMINADO' })
+          return res.status(200).json({ success: false, detail: 'ERROR AL ACTUALIZAR EN TABLA GSP_TPVWCD, AUNQUE LA TABLA GSP_TPVSHOP SI SE ACTUALIZO, POSIBLEMENTE AHORA SEA INDETERMINADO' })
       }
-      //const resp = 'ACTUALIZACION DE TIENDA ' + codStore + ' A ESTADO: ' + status + ' SATISFACTORIA'
+      const resp = 'ACTUALIZACION DE TIENDA ' + codStore + ' A ESTADO: ' + status + ' SATISFACTORIA'
       console.log(resp);
       res.status(200).json({ success : true, detail : resp })
       sql.close();
-    } catch {
+    } catch(err) {
+      console.log('error producido: ',err);
       sql.close();
     }
   }
 }
+
+
+
 
