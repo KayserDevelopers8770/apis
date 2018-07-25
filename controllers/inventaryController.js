@@ -8,11 +8,12 @@ module.exports = {
     
     try{
       const query_get_status = `
-      SELECT T1.U_GSP_FILWAREHOUSE AS code, T1.U_GSP_DESC AS name, T1.U_GSP_AUTOEXEC AS status, T2.U_GSP_TIPOINTEGRCP AS sync, CONVERT(VARCHAR(10),T1.U_GSP_DATEMOD,120) AS date
+      SELECT T1.U_GSP_FILWAREHOUSE AS code, T1.U_GSP_DESC AS name, T1.U_GSP_AUTOEXEC AS status, T2.U_GSP_TIPOINTEGRCP AS sync, T2.U_GSP_TIPOINTEGR, CONVERT(VARCHAR(10),T1.U_GSP_DATEMOD) AS date
       FROM [@GSP_TPVWCD] AS T1 
-      INNER JOIN [@GSP_TPVSHOP] AS T2 ON T1.U_GSP_NAME=T2.U_GSP_DFLTCARD 
+      INNER JOIN [@GSP_TPVSHOP] AS T2 ON T1.U_GSP_FILWAREHOUSE=T2.U_GSP_SHOP 
       INNER JOIN OWHS AS T3 ON  T1.U_GSP_FILWAREHOUSE=T3.WhsCode
       WHERE T3.U_GSP_SENDTPV='Y'
+      ORDER BY T1.U_GSP_FILWAREHOUSE
       `
       const pool = await sql.connect(stringConnection)
       const result = await pool.request().query(query_get_status)  
