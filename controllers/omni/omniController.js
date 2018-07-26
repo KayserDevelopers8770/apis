@@ -1,6 +1,6 @@
 const sql = require('mssql')
 const moment = require('moment');
-const { sendEmail } = require('../helpers/aof-nodemailer')
+const { sendEmail } = require('../../helpers/aof-nodemailer')
 moment().format();
 
 // const stringConnection = 'mssql://wms:pjc3l1@192.168.0.17/WMSTEK_KAYSER'

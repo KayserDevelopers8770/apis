@@ -2,7 +2,7 @@ const sql = require('mssql')
 const stringConnection = 'mssql://sa:sa@192.168.0.33/SBO_KAYSER'
 
 module.exports = { 
-  getAvalaibleStores: async (req,res) => {
+  getAvailableStores: async (req,res) => {
     
     try{
       const query_get_available_stores = ` SELECT WhsCode, WhsName FROM OWHS WHERE U_GSP_SENDTPV='Y' `

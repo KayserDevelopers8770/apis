@@ -1,7 +1,7 @@
 
 const router = require('express-promise-router')(); //PARA MANEJAR MEJOR LAS PROMESAS, para nuestro caso, para manjear mejor los errores
-const { getAvalaibleStores } = require('../controllers/general/generalController');
+const { getAvailableStores } = require('../controllers/general/generalController');
 
 
-router.get('/avalaibleStores', getAvalaibleStores)
+router.get('/availableStores', getAvailableStores)
 module.exports = router
