@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 
-const omniRoute = require("./routes/omniRoute")
+const omniRoute = require("./routes/omni")
 
 //SETTINGS
 app.set('port', process.env.PORT || 3000);

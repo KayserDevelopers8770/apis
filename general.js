@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 
-const inventaryRoute = require("./routes/inventaryRoute")
+const generalRoute = require("./routes/general")
 
 //SETTINGS
 app.set('port', process.env.PORT || 3001);
@@ -21,9 +21,9 @@ app.use(function (req, res, next) {
 
 
 //routes
-app.use("/inventary", inventaryRoute)
+app.use("/", generalRoute)
 
 //start the server
 app.listen(app.get('port'), () => {
-    console.log('Servidor en: http://localhost:' + app.get('port') + '/inventary/...');
+    console.log('Servidor en: http://localhost:' + app.get('port') + '/...')
 })

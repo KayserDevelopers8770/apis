@@ -3,10 +3,10 @@ const bodyParser = require('body-parser')
 const express = require('express')
 const app = express()
 
-const externalRoute = require("./routes/external")
+const inventaryRoute = require("./routes/inventary")
 
 //SETTINGS
-app.set('port', process.env.PORT || 3003);
+app.set('port', process.env.PORT || 3002);
 
 //middleware
 app.use(morgan('dev'))
@@ -21,9 +21,9 @@ app.use(function (req, res, next) {
 
 
 //routes
-app.use("/external", externalRoute)
+app.use("/", inventaryRoute)
 
 //start the server
 app.listen(app.get('port'), () => {
-    console.log('Servidor en: http://localhost:' + app.get('port') + '/external/...');
+    console.log('Servidor en: http://localhost:' + app.get('port') + '/...')
 })
