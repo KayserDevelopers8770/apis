@@ -12,7 +12,7 @@ module.exports = {
           FROM Existencia as t0 
           INNER JOIN Ubicacion as t1 ON t0.IdUbicacion=t1.IdUbicacion
           WHERE t0.IdAlmacen = '01' AND t0.IdUbicacion LIKE '01%' and t1.Nivel in ('1','2')
-          GROUP BY IdArticulo HAVING SUM(Cantidad)>30 ) AS STOCK
+          GROUP BY IdArticulo HAVING SUM(Cantidad)>5 ) AS STOCK
       RIGHT JOIN [192.168.0.13].[Stock].[dbo].[Kayser_OITM] as S ON STOCK.sku = S.itemCode COLLATE SQL_Latin1_General_CP1_CI_AS
       WHERE S.U_Marca='SENS' 
       ORDER BY S.itemCode
